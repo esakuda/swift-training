@@ -1,0 +1,13 @@
+
+# UI libraries
+github "guidomb/MBProgressHUD" "master"
+github "dzenbot/DZNEmptyDataSet" ~> 1.7.3
+
+# Core & Functional Programming
+github "ReactiveCocoa/ReactiveCocoa" ~> 4.0.1
+github "CocoaLumberjack/CocoaLumberjack" ~> 2.2.0
+github "Alamofire/Alamofire" ~> 3.0
+
+# Miscellaneous
+github "MatthewYork/DateTools" ~> 1.7.0
+github "icanzilb/JSONModel" ~> 1.2.0
