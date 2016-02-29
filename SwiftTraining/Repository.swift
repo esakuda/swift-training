@@ -12,8 +12,7 @@ import Accounts
 import Social
 
 protocol TwitterRepository {
-    func fetchHomeTimeLine (user: String) -> SignalProducer<Array<TweetModel>, NSError>
-//    func fetchImage (imageURL: NSURL) -> SignalProducer<UIImage, NSError>
+    func fetchHomeTimeLine (page: NSNumber) -> SignalProducer<[Tweet], NSError>
 }
 
 class TwitterRepositoryImplementation: TwitterRepository {
@@ -53,14 +52,17 @@ class TwitterRepositoryImplementation: TwitterRepository {
         }
     }
     
-    func fetchHomeTimeLine(user: String) -> SignalProducer<Array<TweetModel>, NSError> {
+    func fetchHomeTimeLine(page: NSNumber) -> SignalProducer<[Tweet], NSError> {
         return SignalProducer {
             sink, disposable in
             self.getAccount().startWithNext({ twitterAccount in
                 let requestURL = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
+                print ("PageViewModel \(page)")
                 
-                let parameters = ["screen_name" : user,
+                let parameters = ["screen_name" : twitterAccount.username,
                     "count" : "20"]
+//                    ,
+//                    "max_id" : ]
                 
                 let postRequest = SLRequest(forServiceType:
                     SLServiceTypeTwitter,
@@ -76,7 +78,7 @@ class TwitterRepositoryImplementation: TwitterRepository {
                     do {
                         if let jsonResult = try NSJSONSerialization.JSONObjectWithData(responseData,
                             options: NSJSONReadingOptions.MutableLeaves) as? [AnyObject] {
-                            sink.sendNext(TweetModel.initWithArray(jsonResult as! Array<NSDictionary>))
+                            sink.sendNext(Tweet.initWithArray(jsonResult as! [NSDictionary]))
                         }
                     } catch let error as NSError {
                         sink.sendFailed(error)
@@ -86,9 +88,5 @@ class TwitterRepositoryImplementation: TwitterRepository {
             })
         }
     }
-    
-//    func fetchImage(imageURL: NSURL) -> SignalProducer<UIImage, NSError> {
-//        return RACSignal.empty()
-//    }
 
 }

@@ -8,28 +8,34 @@
 
 import Foundation
 import UIKit
-import Social
-import Accounts
-import DateTools
 import ReactiveCocoa
+import MBProgressHUD
+import AlamofireImage
 
 class TwitterTableViewController: UITableViewController {
     let tableViewModel = TwitterTableViewModel.init()
+    var loadingHUD: MBProgressHUD!
+    var imageViewSize: CGSize!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(self.tableView)
         tableView.registerNib(UINib(nibName: "TwitterCell", bundle: nil), forCellReuseIdentifier: "TwitterCell")
 //        tableView.rowHeight = UITableViewAutomaticDimension
 //        tableView.estimatedRowHeight = 44
-        self.tableViewModel.fetchLineTime().startWithNext({
-            tweetModel in
-            dispatch_async(dispatch_get_main_queue()) {
+        self.tableViewModel.fetchLineTime()
+        self.tableViewModel.loaded.producer.observeOn(UIScheduler()).startWithNext {
+            loaded in
+            if (loaded) {
                 self.tableView.reloadData()
+                self.endLoading()
+            } else {
+                self.startLoading()
             }
-        })
-
-        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        }
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl = refreshControl
+        self.imageViewSize = CGSize(width: 51.0, height: 51.0)
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -41,7 +47,7 @@ class TwitterTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (indexPath.row == self.tableViewModel.elementsCount()) {
+        if (indexPath.row == self.tableViewModel.elementsCount() - 1) {
             self.tableViewModel.fetchLineTime()
         }
     }
@@ -50,22 +56,30 @@ class TwitterTableViewController: UITableViewController {
         let cell = self.tableView.dequeueReusableCellWithIdentifier("TwitterCell") as! TwitterCell
         let tweet = self.tableViewModel.elementForIndexPath(indexPath)
         cell.messageTextView.text = tweet.text
+        cell.messageTextView.addMentionsStyle()
 //        cell.messageTextView.sizeToFit()
 //        cell.messageTextView.layoutIfNeeded()
         cell.userLabel.text = tweet.user
-        cell.timeLabel.text = tweet.time.timeAgoSinceNow()
-        
+        cell.timeLabel.text = tweet.time
+        cell.imageView!.af_setImageWithURL(tweet.avatarURL, placeholderImage:UIImage(named: "avatar_placeholder"), filter:AspectScaledToFillSizeCircleFilter(size: self.imageViewSize))
         return cell
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {
-        self.tableViewModel.refresh().startWithNext({
-            tweetModel in
-            dispatch_async(dispatch_get_main_queue()) {
-                self.tableView.reloadData()
-                refreshControl.endRefreshing()
-            }
-        })
+        self.tableViewModel.refresh()
+        self.refreshControl?.endRefreshing()
+    }
+    
+    func startLoading() {
+        if (self.loadingHUD == nil) {
+            self.loadingHUD = MBProgressHUD.showHUDAddedTo(self.tableView, animated:true)
+        } else {
+            self.loadingHUD.show(true)
+        }
+    }
+    
+    func endLoading() {
+        self.loadingHUD.hide(true)
     }
 
 }

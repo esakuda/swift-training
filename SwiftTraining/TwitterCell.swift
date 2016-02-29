@@ -13,5 +13,5 @@ class TwitterCell: UITableViewCell {
     @IBOutlet weak var userLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var avatarImageView: UIImageView!
-    @IBOutlet weak var messageTextView: UITextView!
+    @IBOutlet weak var messageTextView: MentionTextView!
 }
