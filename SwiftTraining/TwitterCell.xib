@@ -8,7 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TwitterCell" rowHeight="98" id="c6m-fO-9dg" customClass="TwitterCell" customModule="SwiftTraining" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TwitterCell" rowHeight="150" id="c6m-fO-9dg" customClass="TwitterCell" customModule="SwiftTraining" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="373" height="98"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c6m-fO-9dg" id="gUy-jz-YmM">
@@ -22,20 +22,20 @@
                             <constraint firstAttribute="width" constant="54" id="Er2-2h-oEN"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YsT-Fn-EwG">
-                        <rect key="frame" x="199" y="21" width="161" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YsT-Fn-EwG">
+                        <rect key="frame" x="329" y="21" width="31" height="15"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4mg-tt-0KX">
-                        <rect key="frame" x="86" y="16" width="103" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4mg-tt-0KX">
+                        <rect key="frame" x="86" y="16" width="233" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" text="tweet" translatesAutoresizingMaskIntoConstraints="NO" id="XT4-KC-li5" customClass="MentionTextView" customModule="SwiftTraining" customModuleProvider="target">
-                        <rect key="frame" x="86" y="50" width="279" height="39"/>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="tweet" translatesAutoresizingMaskIntoConstraints="NO" id="XT4-KC-li5">
+                        <rect key="frame" x="86" y="44" width="279" height="45"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -60,7 +60,7 @@
                 <outlet property="avatarImageView" destination="M20-Dt-gob" id="CWc-GS-VJN"/>
                 <outlet property="messageTextView" destination="XT4-KC-li5" id="NR3-bM-66o"/>
                 <outlet property="timeLabel" destination="YsT-Fn-EwG" id="aSI-Cb-dQh"/>
-                <outlet property="userLabel" destination="4mg-tt-0KX" id="xyg-yC-oVA"/>
+                <outlet property="usernameLabel" destination="4mg-tt-0KX" id="PuD-sI-qTR"/>
             </connections>
             <point key="canvasLocation" x="349.5" y="269"/>
         </tableViewCell>

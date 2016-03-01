@@ -12,9 +12,7 @@
 		F439CBB11C7E1FC60057040C /* TwitterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F439CBB01C7E1FC60057040C /* TwitterCell.xib */; };
 		F439CBB31C7E23620057040C /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F439CBB21C7E23620057040C /* Tweet.swift */; };
 		F44363441C7F720A0093626D /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44363431C7F720A0093626D /* Repository.swift */; };
-		F4506C181C7F4BEB00861A59 /* UITextViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4506C171C7F4BEB00861A59 /* UITextViewExtensions.swift */; };
 		F45E2E981C8492FE00F17BE5 /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45E2E971C8492FE00F17BE5 /* TweetViewModel.swift */; };
-		F45E2E9A1C849E3400F17BE5 /* MentionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45E2E991C849E3400F17BE5 /* MentionTextView.swift */; };
 		F473382D1C7CFA2600C21F94 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F473382C1C7CFA2600C21F94 /* AppDelegate.swift */; };
 		F47338321C7CFA2600C21F94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F47338301C7CFA2600C21F94 /* Main.storyboard */; };
 		F47338341C7CFA2600C21F94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F47338331C7CFA2600C21F94 /* Assets.xcassets */; };
@@ -49,9 +47,7 @@
 		F439CBB01C7E1FC60057040C /* TwitterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterCell.xib; sourceTree = "<group>"; };
 		F439CBB21C7E23620057040C /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		F44363431C7F720A0093626D /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
-		F4506C171C7F4BEB00861A59 /* UITextViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextViewExtensions.swift; sourceTree = "<group>"; };
 		F45E2E971C8492FE00F17BE5 /* TweetViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetViewModel.swift; sourceTree = "<group>"; };
-		F45E2E991C849E3400F17BE5 /* MentionTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionTextView.swift; sourceTree = "<group>"; };
 		F47338291C7CFA2600C21F94 /* SwiftTraining.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftTraining.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F473382C1C7CFA2600C21F94 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F47338311C7CFA2600C21F94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -141,11 +137,9 @@
 				F47338351C7CFA2600C21F94 /* LaunchScreen.storyboard */,
 				F47338381C7CFA2600C21F94 /* Info.plist */,
 				F438F47A1C7E304E001D6CC8 /* TwitterTableViewController.swift */,
-				F4506C171C7F4BEB00861A59 /* UITextViewExtensions.swift */,
 				F44363431C7F720A0093626D /* Repository.swift */,
 				F4FAC5F81C80A15D00F2D3D4 /* TwitterTableViewModel.swift */,
 				F45E2E971C8492FE00F17BE5 /* TweetViewModel.swift */,
-				F45E2E991C849E3400F17BE5 /* MentionTextView.swift */,
 			);
 			path = SwiftTraining;
 			sourceTree = "<group>";
@@ -321,14 +315,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4FAC5F91C80A15D00F2D3D4 /* TwitterTableViewModel.swift in Sources */,
-				F45E2E9A1C849E3400F17BE5 /* MentionTextView.swift in Sources */,
 				F438F47B1C7E304E001D6CC8 /* TwitterTableViewController.swift in Sources */,
 				F439CBAE1C7E1F9D0057040C /* TwitterCell.swift in Sources */,
 				F473382D1C7CFA2600C21F94 /* AppDelegate.swift in Sources */,
 				F45E2E981C8492FE00F17BE5 /* TweetViewModel.swift in Sources */,
 				F44363441C7F720A0093626D /* Repository.swift in Sources */,
 				F439CBB31C7E23620057040C /* Tweet.swift in Sources */,
-				F4506C181C7F4BEB00861A59 /* UITextViewExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

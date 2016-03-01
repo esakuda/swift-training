@@ -11,23 +11,26 @@ import ReactiveCocoa
 import Accounts
 import Social
 
-protocol TwitterRepository {
-    func fetchHomeTimeLine (page: NSNumber) -> SignalProducer<[Tweet], NSError>
+private let DefaultCount: UInt = 20
+
+protocol TwitterRepositoryType {
+    
+    func fetchHomeTimeLine(maxID: String?, count: UInt) -> SignalProducer<[Tweet], NSError>
+    
 }
 
-class TwitterRepositoryImplementation: TwitterRepository {
-    private let accountStore: ACAccountStore
-    private let twitterAccountType: ACAccountType
+final class TwitterRepository: TwitterRepositoryType {
     
-    init () {
-        self.accountStore = ACAccountStore()
-        self.twitterAccountType = accountStore.accountTypeWithAccountTypeIdentifier(
-            ACAccountTypeIdentifierTwitter)
+    private let _accountStore: ACAccountStore
+    private let _twitterAccountType: ACAccountType
+    
+    init(accountStore: ACAccountStore = ACAccountStore()) {
+        _accountStore = accountStore
+        _twitterAccountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
     }
     
     func getTwitterAccount() -> ACAccount! {
-        let arrayOfAccounts =
-        self.accountStore.accountsWithAccountType(self.twitterAccountType)
+        let arrayOfAccounts = _accountStore.accountsWithAccountType(_twitterAccountType)
         
         if arrayOfAccounts.count > 0 {
             return arrayOfAccounts.last as! ACAccount
@@ -39,7 +42,7 @@ class TwitterRepositoryImplementation: TwitterRepository {
     func getAccount() -> SignalProducer<ACAccount, NSError> {
         return SignalProducer {
             sink, disposable in
-            self.accountStore.requestAccessToAccountsWithType(self.twitterAccountType, options: nil,
+            self._accountStore.requestAccessToAccountsWithType(self._twitterAccountType, options: nil,
                 completion: {(success: Bool, error: NSError!) -> Void in
                     
                     if success {
@@ -52,17 +55,18 @@ class TwitterRepositoryImplementation: TwitterRepository {
         }
     }
     
-    func fetchHomeTimeLine(page: NSNumber) -> SignalProducer<[Tweet], NSError> {
-        return SignalProducer {
-            sink, disposable in
+    func fetchHomeTimeLine(maxID: String? = Optional.None, count: UInt = DefaultCount) -> SignalProducer<[Tweet], NSError> {
+        return SignalProducer { sink, disposable in
             self.getAccount().startWithNext({ twitterAccount in
                 let requestURL = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
-                print ("PageViewModel \(page)")
                 
-                let parameters = ["screen_name" : twitterAccount.username,
-                    "count" : "20"]
-//                    ,
-//                    "max_id" : ]
+                var parameters: [String : AnyObject] = [
+                    "screen_name" : twitterAccount.username,
+                    "count" : count
+                ]
+                if let ID = maxID {
+                    parameters["max_id"] = ID
+                }
                 
                 let postRequest = SLRequest(forServiceType:
                     SLServiceTypeTwitter,
@@ -72,19 +76,16 @@ class TwitterRepositoryImplementation: TwitterRepository {
                 
                 postRequest.account = twitterAccount
                 
-                postRequest.performRequestWithHandler( { ( responseData: NSData!,
-                    urlResponse: NSHTTPURLResponse!,
-                    error: NSError!) -> Void in
+                postRequest.performRequestWithHandler { responseData, _, error in
                     do {
-                        if let jsonResult = try NSJSONSerialization.JSONObjectWithData(responseData,
-                            options: NSJSONReadingOptions.MutableLeaves) as? [AnyObject] {
-                            sink.sendNext(Tweet.initWithArray(jsonResult as! [NSDictionary]))
+                        if let jsonResult = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves) as? [JSON] {
+                            let tweets = jsonResult.map { Tweet.fromJSON($0) }
+                            sink.sendNext(tweets)
                         }
                     } catch let error as NSError {
                         sink.sendFailed(error)
                     }
-                    
-                })
+                }
             })
         }
     }

@@ -9,26 +9,40 @@
 import Foundation
 import ReactiveCocoa
 
-class Tweet: NSObject {
-    var user: String!
-    var avatar: String!
-    var text: String!
-    var time: String!
+typealias JSON = [String : AnyObject]
+typealias Entity = String
+
+struct Tweet {
     
-    init(dictionary: NSDictionary) {
-        super.init()
-        self.user = dictionary.objectForKey("user")?.objectForKey("name") as? String
-        self.text = dictionary.objectForKey("text") as? String
-        self.avatar = dictionary.objectForKey("user")?.objectForKey("profile_image_url") as? String
-        print(self.avatar)
-        self.time = dictionary.objectForKey("created_at") as? String
+    let ID: String
+    let username: String
+    let avatarURL: NSURL
+    let text: String
+    let createdAt:  NSDate
+    let entities: [String: [AnyObject]]
+    
+}
+
+extension Tweet {
+    
+    static func fromJSON(tweet: JSON) -> Tweet {
+        let ID = tweet["id_str"] as! String
+        let username = tweet["user"]!["name"] as! String
+        let text = tweet["text"] as! String
+        let avatarURL = tweet["user"]!["profile_image_url"] as! String
+        let createdAt = tweet["created_at"] as! String
+        let entities = tweet["entities"] as! [String : [AnyObject]]
+        return Tweet(ID: ID, username: username, avatarURL: NSURL(string: avatarURL)!, text: text, createdAt: NSDate.parseTwitterDate(createdAt)!, entities: entities)
     }
     
-    class func initWithArray (JSONArray: [NSDictionary]) -> [Tweet] {
-    return JSONArray.map({
-            dictionary in
-            return Tweet.init(dictionary: dictionary)
-        })
+}
+
+private extension NSDate {
+    
+    static func parseTwitterDate(date: String) -> NSDate? {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "eee MMM dd HH:mm:ss ZZZZ yyyy"
+        return dateFormatter.dateFromString(date)
     }
     
 }

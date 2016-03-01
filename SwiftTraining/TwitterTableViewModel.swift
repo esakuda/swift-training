@@ -9,46 +9,37 @@
 import Foundation
 import ReactiveCocoa
 
-class TwitterTableViewModel {
-    var dataSource = [TweetViewModel]()
-    var page = 0
-    var twitterRepository = TwitterRepositoryImplementation.init()
-    var loaded: MutableProperty<Bool>
-    var refreshing: MutableProperty<Bool>!
+final class TwitterTableViewModel {
     
-    init() {
-        loaded = MutableProperty.init(false)
-        refreshing = MutableProperty.init(false)
-        fetchLineTime()
+    private(set) var fetchTimeline: Action<Bool, [TweetViewModel], NSError>! = nil
+    
+    private let _tweets = MutableProperty<[TweetViewModel]>([])
+    let tweets: AnyProperty<[TweetViewModel]>
+    
+    private let _lastTweetID = MutableProperty<String?>(Optional.None)
+    
+    private let _twitterRepository: TwitterRepository
+    
+    var tweetsCount: Int {
+        return _tweets.value.count
     }
     
-    func fetchLineTime() {
-        loaded.value = false
-        twitterRepository.fetchHomeTimeLine(NSNumber.init(integer: page)).start { event in
-            switch event {
-            case .Next(let tweets):
-                    self.dataSource.appendContentsOf(tweets.map { TweetViewModel(tweet: $0) })
-                    self.page = self.page + 1
-            case .Failed(let error): print("Error fetching tweets \(error)")
-            default: break
+    init(twitterRepository: TwitterRepository = TwitterRepository()) {
+        _twitterRepository = twitterRepository
+        tweets = AnyProperty(initialValue: [], signal: _tweets.signal)
+        fetchTimeline = Action { [unowned self] reload in
+            let maxID = reload ? Optional.None : self._lastTweetID.value
+            return twitterRepository.fetchHomeTimeLine(maxID).map { tweets in
+                tweets.map{ TweetViewModel(tweet: $0) }
             }
-            print ("PageViewModel \(self.page)")
-            self.loaded.value = true
+            .observeOn(UIScheduler())
         }
+        _tweets <~ fetchTimeline.values
+        _lastTweetID <~ _tweets.signal.map { $0.last?.tweetID }
     }
     
-    func refresh() {
-        self.page = 0
-        refreshing.value = true
-        fetchLineTime()
-        refreshing.value = false
+    subscript(index: Int) -> TweetViewModel {
+        return _tweets.value[index]
     }
     
-    func elementsCount() -> Int {
-        return self.dataSource.count
-    }
-    
-    func elementForIndexPath (indexPath: NSIndexPath) -> TweetViewModel {
-        return self.dataSource[indexPath.row]
-    }    
 }

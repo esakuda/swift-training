@@ -13,73 +13,66 @@ import MBProgressHUD
 import AlamofireImage
 
 class TwitterTableViewController: UITableViewController {
-    let tableViewModel = TwitterTableViewModel.init()
-    var loadingHUD: MBProgressHUD!
+    let tableViewModel = TwitterTableViewModel()
+    private var _loadingHUD: MBProgressHUD!
+    
     var imageViewSize: CGSize!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        _loadingHUD = MBProgressHUD.showHUDAddedTo(tableView, animated:true)
         tableView.registerNib(UINib(nibName: "TwitterCell", bundle: nil), forCellReuseIdentifier: "TwitterCell")
-//        tableView.rowHeight = UITableViewAutomaticDimension
-//        tableView.estimatedRowHeight = 44
-        self.tableViewModel.fetchLineTime()
-        self.tableViewModel.loaded.producer.observeOn(UIScheduler()).startWithNext {
-            loaded in
-            if (loaded) {
-                self.tableView.reloadData()
-                self.endLoading()
+        tableViewModel.fetchTimeline.executing.producer.startWithNext { [unowned self] executing in
+            if executing {
+                self._loadingHUD.show(true)
             } else {
-                self.startLoading()
+                self._loadingHUD.hide(true)
             }
         }
+        tableViewModel.fetchTimeline.errors.observeNext { error in
+            print("Error fetching tweets: \(error)")
+        }
+        tableViewModel.fetchTimeline.values.observeNext { [unowned self] _ in self.tableView.reloadData() }
+        tableViewModel.fetchTimeline.apply(true).start()
+        
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
-        self.imageViewSize = CGSize(width: 51.0, height: 51.0)
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tableViewModel.elementsCount()
+        print(tableViewModel.tweetsCount)
+        return tableViewModel.tweetsCount
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100.0
+        return 150.0
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (indexPath.row == self.tableViewModel.elementsCount() - 1) {
-            self.tableViewModel.fetchLineTime()
+        print("tweetsCount: \(tableViewModel.tweetsCount)")
+        print(indexPath.row)
+        if (indexPath.row == tableViewModel.tweetsCount - 1) {
+            print("Asking for next page??")
+            print(tableViewModel.fetchTimeline)
+            tableViewModel.fetchTimeline.apply(false).start()
         }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCellWithIdentifier("TwitterCell") as! TwitterCell
-        let tweet = self.tableViewModel.elementForIndexPath(indexPath)
-        cell.messageTextView.text = tweet.text
-        cell.messageTextView.addMentionsStyle()
-//        cell.messageTextView.sizeToFit()
-//        cell.messageTextView.layoutIfNeeded()
-        cell.userLabel.text = tweet.user
-        cell.timeLabel.text = tweet.time
-        cell.imageView!.af_setImageWithURL(tweet.avatarURL, placeholderImage:UIImage(named: "avatar_placeholder"), filter:AspectScaledToFillSizeCircleFilter(size: self.imageViewSize))
+        let cell = tableView.dequeueReusableCellWithIdentifier("TwitterCell") as! TwitterCell
+        let tweet = tableViewModel[indexPath.row]
+        cell.bindViewModel(tweet)
         return cell
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {
-        self.tableViewModel.refresh()
-        self.refreshControl?.endRefreshing()
-    }
-    
-    func startLoading() {
-        if (self.loadingHUD == nil) {
-            self.loadingHUD = MBProgressHUD.showHUDAddedTo(self.tableView, animated:true)
-        } else {
-            self.loadingHUD.show(true)
+        tableViewModel.fetchTimeline.apply(true).start {
+            switch $0 {
+            case .Next(_): break
+            default: self.refreshControl?.endRefreshing()
+            }
         }
-    }
-    
-    func endLoading() {
-        self.loadingHUD.hide(true)
     }
 
 }
