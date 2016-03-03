@@ -12,28 +12,36 @@ import ReactiveCocoa
 import MBProgressHUD
 import AlamofireImage
 
-class TwitterTableViewController: UITableViewController {
-    let tableViewModel = TwitterTableViewModel()
-    private var _loadingHUD: MBProgressHUD!
+final class TwitterTableViewController: UITableViewController {
     
-    var imageViewSize: CGSize!
+    let tableViewModel = TwitterTableViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        _loadingHUD = MBProgressHUD.showHUDAddedTo(tableView, animated:true)
+        
         tableView.registerNib(UINib(nibName: "TwitterCell", bundle: nil), forCellReuseIdentifier: "TwitterCell")
         tableViewModel.fetchTimeline.executing.producer.startWithNext { [unowned self] executing in
             if executing {
-                self._loadingHUD.show(true)
+                MBProgressHUD.showHUDAddedTo(self.tableView, animated: true)
             } else {
-                self._loadingHUD.hide(true)
+                MBProgressHUD.hideAllHUDsForView(self.tableView, animated: true)
+            }
+        }
+        tableViewModel.fetchTimelineNextPage.executing.signal.observeNext { [unowned self] executing in
+            if executing {
+                let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+                activityIndicator.startAnimating()
+                self.tableView.tableFooterView = activityIndicator
+            } else {
+                self.tableView.tableFooterView = nil
             }
         }
         tableViewModel.fetchTimeline.errors.observeNext { error in
             print("Error fetching tweets: \(error)")
         }
-        tableViewModel.fetchTimeline.values.observeNext { [unowned self] _ in self.tableView.reloadData() }
-        tableViewModel.fetchTimeline.apply(true).start()
+        tableViewModel.tweets.signal.observeNext { [unowned self] _ in self.tableView.reloadData() }
+        
+        reloadTweets.start()
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
@@ -41,7 +49,6 @@ class TwitterTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(tableViewModel.tweetsCount)
         return tableViewModel.tweetsCount
     }
     
@@ -50,12 +57,8 @@ class TwitterTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        print("tweetsCount: \(tableViewModel.tweetsCount)")
-        print(indexPath.row)
         if (indexPath.row == tableViewModel.tweetsCount - 1) {
-            print("Asking for next page??")
-            print(tableViewModel.fetchTimeline)
-            tableViewModel.fetchTimeline.apply(false).start()
+            tableViewModel.fetchTimelineNextPage.apply("").start()
         }
     }
     
@@ -67,7 +70,7 @@ class TwitterTableViewController: UITableViewController {
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {
-        tableViewModel.fetchTimeline.apply(true).start {
+        reloadTweets.start {
             switch $0 {
             case .Next(_): break
             default: self.refreshControl?.endRefreshing()
@@ -75,4 +78,12 @@ class TwitterTableViewController: UITableViewController {
         }
     }
 
+}
+
+private extension TwitterTableViewController {
+    
+    var reloadTweets: SignalProducer<[TweetViewModel], ActionError<NSError>> {
+        return tableViewModel.fetchTimeline.apply("")
+    }
+    
 }

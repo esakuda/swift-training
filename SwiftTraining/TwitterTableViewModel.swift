@@ -11,7 +11,8 @@ import ReactiveCocoa
 
 final class TwitterTableViewModel {
     
-    private(set) var fetchTimeline: Action<Bool, [TweetViewModel], NSError>! = nil
+    private(set) var fetchTimeline: Action<AnyObject, [TweetViewModel], NSError>! = nil
+    private(set) var fetchTimelineNextPage: Action<AnyObject, [TweetViewModel], NSError>! = nil
     
     private let _tweets = MutableProperty<[TweetViewModel]>([])
     let tweets: AnyProperty<[TweetViewModel]>
@@ -27,19 +28,29 @@ final class TwitterTableViewModel {
     init(twitterRepository: TwitterRepository = TwitterRepository()) {
         _twitterRepository = twitterRepository
         tweets = AnyProperty(initialValue: [], signal: _tweets.signal)
-        fetchTimeline = Action { [unowned self] reload in
-            let maxID = reload ? Optional.None : self._lastTweetID.value
-            return twitterRepository.fetchHomeTimeLine(maxID).map { tweets in
-                tweets.map{ TweetViewModel(tweet: $0) }
-            }
-            .observeOn(UIScheduler())
-        }
+        fetchTimeline = Action { [unowned self] _ in self.fetchHomeTimeline() }
+        fetchTimelineNextPage = Action { [unowned self] _ in self.fetchHomeTimeline(self._lastTweetID.value) }
+        
         _tweets <~ fetchTimeline.values
+        fetchTimelineNextPage.values.observeNext { self._tweets.value += $0 }
+        
         _lastTweetID <~ _tweets.signal.map { $0.last?.tweetID }
+        
     }
     
     subscript(index: Int) -> TweetViewModel {
         return _tweets.value[index]
+    }
+    
+}
+
+private extension TwitterTableViewModel {
+    
+    func fetchHomeTimeline(maxID: String? = Optional.None) -> SignalProducer<[TweetViewModel], NSError> {
+        return _twitterRepository.fetchHomeTimeLine(maxID).map { tweets in
+            tweets.map{ TweetViewModel(tweet: $0) }
+        }
+        .observeOn(UIScheduler())
     }
     
 }
