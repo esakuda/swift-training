@@ -11,13 +11,18 @@
 		F439CBAE1C7E1F9D0057040C /* TwitterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F439CBAD1C7E1F9D0057040C /* TwitterCell.swift */; };
 		F439CBB11C7E1FC60057040C /* TwitterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F439CBB01C7E1FC60057040C /* TwitterCell.xib */; };
 		F439CBB31C7E23620057040C /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F439CBB21C7E23620057040C /* Tweet.swift */; };
+		F440F7901C87711F00943723 /* Nimble.framework in Carthage */ = {isa = PBXBuildFile; fileRef = F440F78B1C87708700943723 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F440F7911C87711F00943723 /* Quick.framework in Carthage */ = {isa = PBXBuildFile; fileRef = F440F78C1C87708700943723 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F440F7921C87751F00943723 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F440F78B1C87708700943723 /* Nimble.framework */; };
+		F440F7931C87751F00943723 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F440F78C1C87708700943723 /* Quick.framework */; };
 		F44363441C7F720A0093626D /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44363431C7F720A0093626D /* Repository.swift */; };
 		F45E2E981C8492FE00F17BE5 /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45E2E971C8492FE00F17BE5 /* TweetViewModel.swift */; };
 		F473382D1C7CFA2600C21F94 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F473382C1C7CFA2600C21F94 /* AppDelegate.swift */; };
 		F47338321C7CFA2600C21F94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F47338301C7CFA2600C21F94 /* Main.storyboard */; };
 		F47338341C7CFA2600C21F94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F47338331C7CFA2600C21F94 /* Assets.xcassets */; };
 		F47338371C7CFA2600C21F94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F47338351C7CFA2600C21F94 /* LaunchScreen.storyboard */; };
-		F4A66BC11C7DFFF4000FEF34 /* SwiftTrainingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A66BC01C7DFFF4000FEF34 /* SwiftTrainingTests.swift */; };
+		F49373981C8892FB00682FAA /* Tweet.json in Resources */ = {isa = PBXBuildFile; fileRef = F49373971C8892FB00682FAA /* Tweet.json */; };
+		F4A66BC11C7DFFF4000FEF34 /* TweetViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A66BC01C7DFFF4000FEF34 /* TweetViewModelSpec.swift */; };
 		F4A66BCA1C7E029E000FEF34 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4A66BC91C7E029E000FEF34 /* Accounts.framework */; };
 		F4A66BE41C7E076B000FEF34 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4A66BDC1C7E076B000FEF34 /* Alamofire.framework */; };
 		F4A66BE51C7E076B000FEF34 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4A66BDD1C7E076B000FEF34 /* CocoaLumberjack.framework */; };
@@ -41,11 +46,28 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		F440F78F1C87710C00943723 /* Carthage */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F440F7901C87711F00943723 /* Nimble.framework in Carthage */,
+				F440F7911C87711F00943723 /* Quick.framework in Carthage */,
+			);
+			name = Carthage;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		F438F47A1C7E304E001D6CC8 /* TwitterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTableViewController.swift; sourceTree = "<group>"; };
 		F439CBAD1C7E1F9D0057040C /* TwitterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterCell.swift; sourceTree = "<group>"; };
 		F439CBB01C7E1FC60057040C /* TwitterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterCell.xib; sourceTree = "<group>"; };
 		F439CBB21C7E23620057040C /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
+		F440F78B1C87708700943723 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
+		F440F78C1C87708700943723 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		F44363431C7F720A0093626D /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		F45E2E971C8492FE00F17BE5 /* TweetViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetViewModel.swift; sourceTree = "<group>"; };
 		F47338291C7CFA2600C21F94 /* SwiftTraining.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftTraining.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,8 +76,9 @@
 		F47338331C7CFA2600C21F94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F47338361C7CFA2600C21F94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F47338381C7CFA2600C21F94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F49373971C8892FB00682FAA /* Tweet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Tweet.json; path = JSONS/Tweet.json; sourceTree = "<group>"; };
 		F4A66BBE1C7DFFF4000FEF34 /* SwiftTrainingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftTrainingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4A66BC01C7DFFF4000FEF34 /* SwiftTrainingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTrainingTests.swift; sourceTree = "<group>"; };
+		F4A66BC01C7DFFF4000FEF34 /* TweetViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetViewModelSpec.swift; sourceTree = "<group>"; };
 		F4A66BC21C7DFFF4000FEF34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4A66BC91C7E029E000FEF34 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		F4A66BDC1C7E076B000FEF34 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
@@ -92,6 +115,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F440F7921C87751F00943723 /* Nimble.framework in Frameworks */,
+				F440F7931C87751F00943723 /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,10 +169,19 @@
 			path = SwiftTraining;
 			sourceTree = "<group>";
 		};
+		F493738F1C887BC900682FAA /* JSONS */ = {
+			isa = PBXGroup;
+			children = (
+				F49373971C8892FB00682FAA /* Tweet.json */,
+			);
+			name = JSONS;
+			sourceTree = "<group>";
+		};
 		F4A66BBF1C7DFFF4000FEF34 /* SwiftTrainingTests */ = {
 			isa = PBXGroup;
 			children = (
-				F4A66BC01C7DFFF4000FEF34 /* SwiftTrainingTests.swift */,
+				F493738F1C887BC900682FAA /* JSONS */,
+				F4A66BC01C7DFFF4000FEF34 /* TweetViewModelSpec.swift */,
 				F4A66BC21C7DFFF4000FEF34 /* Info.plist */,
 			);
 			path = SwiftTrainingTests;
@@ -156,6 +190,8 @@
 		F4A66BDB1C7E02DB000FEF34 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F440F78B1C87708700943723 /* Nimble.framework */,
+				F440F78C1C87708700943723 /* Quick.framework */,
 				F4BA12571C84BCA8009D1320 /* AlamofireImage.framework */,
 				F4A66BDC1C7E076B000FEF34 /* Alamofire.framework */,
 				F4A66BDD1C7E076B000FEF34 /* CocoaLumberjack.framework */,
@@ -199,6 +235,7 @@
 				F4A66BBA1C7DFFF4000FEF34 /* Sources */,
 				F4A66BBB1C7DFFF4000FEF34 /* Frameworks */,
 				F4A66BBC1C7DFFF4000FEF34 /* Resources */,
+				F440F78F1C87710C00943723 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -264,6 +301,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F49373981C8892FB00682FAA /* Tweet.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,7 +366,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4A66BC11C7DFFF4000FEF34 /* SwiftTrainingTests.swift in Sources */,
+				F4A66BC11C7DFFF4000FEF34 /* TweetViewModelSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,6 +517,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = SwiftTrainingTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wolox.SwiftTrainingTests;
@@ -491,6 +533,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = SwiftTrainingTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wolox.SwiftTrainingTests;
